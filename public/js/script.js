@@ -6,27 +6,28 @@ $(document).ready(function() {
 	let searchingCity = $('input[name="city"]');
 	let searchResult = $('#searchResult');
 	let myCity = $('#myCity');
+	let cityName;
+	let lat;
+	let lng;
 
 	showWatherDetails = function (result) {
 
 		let rainfall = result.daily.data[0].precipType;
-		console.log(rainfall);
 		let hourlyData = result.hourly;
 		let summary = hourlyData.summary;
 		let datas = hourlyData.data;
 		let temperature = (datas[0].temperature - 32)/1.8;
 		let icon = "{{ asset('img/'" + datas[0].icon + ".svg') }}";
-		console.log(icon);
-
 		let date = new Date(null);
+		
 		date.setSeconds(datas[0].time);
-		console.log(date.toISOString());
+		// console.log(date.toISOString());
 
 		let text = summary + "\n Temperatura: " + Math.floor(temperature * 10) / 10 + '&#x2103;' + 
 		", Wilgotność: " + datas[0].humidity * 100 + "%, siła wiatru: " + datas[0].windSpeed + 
 		"m/s, indeks promieniowania UV: " + datas[0].uvIndex;
 
-		let img = $('<img src="img/' + datas[0].icon + '.svg" width="100">');
+		let img = $('<img src="img/' + datas[0].icon + '.png" width="100">');
 
 		$('#details')
 			.html(text);
@@ -45,7 +46,7 @@ $(document).ready(function() {
 		}
 		if(result.status == "OK") {
 			
-			let cityName = result.results[0].address_components[0].long_name;
+			cityName = result.results[0].address_components[0].long_name;
 
 			searchResult.text(cityName);
 			myCity.text(cityName);
@@ -53,8 +54,8 @@ $(document).ready(function() {
  			let darksky = "https://api.darksky.net/forecast/";
  			let darkskyKey = "8676a9ca8d3ed7e785fb490ee18b6635";
 
-			let lat = result.results[0].geometry.location.lat;
-			let lng = result.results[0].geometry.location.lng;
+			lat = result.results[0].geometry.location.lat;
+			lng = result.results[0].geometry.location.lng;
 
 			let darkskyUrl = darksky + darkskyKey + "/" + lat + "," + lng;
 			
@@ -111,7 +112,7 @@ $(document).ready(function() {
 		            if(types=="locality,political") {
 		            	city = addressComponents[i].long_name;
 		               	cityOutput.text(city); // CITY
-		               	console.log(city);
+		               	// console.log(city);
 		            }
 		            if(types=="country,political") {
 		            	country = addressComponents[i].long_name;
@@ -147,5 +148,38 @@ $(document).ready(function() {
 			getWeather(search);
 
 			return false;			
-		})
+		});
+
+		$('#preferences').click(function(e) {
+			e.preventDefault();
+
+			let url = "/weather_app/public/preferences";
+
+			$.ajax({
+				headers: {
+					    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			  	},
+				url: url,
+				type: "POST",
+				dataType: "json",
+				data: {
+					cityName: cityName,
+					lat: lat,
+					lng: lng,
+					max_temp: $('input[name="max_temp"]').val(),
+					min_temp: $('input[name="min_temp"]').val(), 
+					radiation: $('input[name="radiation"]').val(),
+					max_humidity: $('input[name="max_humidity"]').val(),
+					min_humidity: $('input[name="min_humidity"]').val(),
+					wind: $('input[name="wind_v"]').val(),
+					email: $('input[name="email"]').val(),
+				},
+			}).done(function(result) {
+				console.log(result);
+			}).fail(function(result) {
+				console.log(result.responseText);
+			});
+
+			return false;
+		});
 });

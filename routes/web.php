@@ -14,3 +14,7 @@
 Route::get('/', function () {
     return view('test');
 });
+
+Route::post('preferences', 'PreferencesController@store');
+
+Route::get('weather/{lat}/{lng}', 'WeatherController@update');

@@ -28,7 +28,13 @@
 				@include('preferences.preferences')
 			</div>
 		</div>
+		<form action="{{ url('preferences') }}" method="POST">
+			{{ csrf_field() }}
+			<button>Idz</button>
+			
+		</form>
 	</div> 
+
 
 @endsection
 
