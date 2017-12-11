@@ -1,4 +1,6 @@
-<form action="#" method="POST">
+
+<h4 id="title">Ustaw powiadomienia dla <span id="myCity">...</span></h4>
+<form id="preferences_form" action="#" method="POST">
 
 	{{ csrf_field() }}
 
@@ -29,6 +31,7 @@
 	<div class="form-group col-md-6">
 		<label for="email">Adres e-mail</label>
 		<input type="email" name="email" value="" class="form-control" required>
+		<div class="help-block"></div>
 	</div>
 	<div class="col-md-6 pull-right">
 		<label></label>

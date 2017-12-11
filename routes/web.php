@@ -12,9 +12,11 @@
 */
 
 Route::get('/', function () {
-    return view('test');
+    return view('user.create');
 });
 
 Route::post('preferences', 'PreferencesController@store');
+Route::get('preferences/{token}', 'PreferencesController@edit');
 
 Route::get('weather/{lat}/{lng}', 'WeatherController@update');
+

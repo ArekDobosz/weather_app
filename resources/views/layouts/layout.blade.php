@@ -13,12 +13,31 @@
     <!-- Styles -->
     <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
     
 </head>
 <body>
     <div class="container">
 
-        @yield('content')
+        <div class="panel panel-success">
+            <div class="panel-heading text-center">
+                        
+                <h5 class="pull-left">
+                    Twoja aktualna pozycja: 
+                    <span id="countryOutput"></span>,
+                    <span id="cityOutput"></span>               
+                </h5>
+                <div class="pull-right">
+                    @include('search')
+                </div>
+            </div>
+            <div class="panel-body text-center">
+                @yield('details')
+            </div>
+        </div>
+
+        @yield('form')
+
 
     </div>
 

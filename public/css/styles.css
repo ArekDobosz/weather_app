@@ -1,0 +1,12 @@
+.help-block {
+	height: 20px;
+	color: red;
+}
+
+.weather_details {
+	list-style: none;
+}
+
+#form {
+	display: none;
+}

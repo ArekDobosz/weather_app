@@ -5,7 +5,7 @@
 			<input type="text" name="city" class="form-control" placeholder="Wyszukaj miasto...">
 		</div>
 		<div class="col-md-3 text-left">				
-			<button id="submit_btn" type="submit" class="btn btn-info">Wyszukaj</button>
+			<button id="submit_btn" type="submit" class="btn btn-info">Pokaż pogodę</button>
 		</div>
 	</div>
 </form>
