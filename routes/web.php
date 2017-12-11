@@ -17,6 +17,8 @@ Route::get('/', function () {
 
 Route::post('preferences', 'PreferencesController@store');
 Route::get('preferences/{token}', 'PreferencesController@edit');
+Route::patch('preferences/{token}', 'PreferencesController@update');
 
-Route::get('weather/{lat}/{lng}', 'WeatherController@update');
+// Route::get('weather/{lat}/{lng}', 'WeatherController@update');
+Route::get('weather/', 'WeatherController@update');
 

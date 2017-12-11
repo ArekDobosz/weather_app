@@ -36,19 +36,6 @@ $(document).ready(function() {
 
 		myCity.val(cityName);
 		$('#form').show();
-
-		// let text = summary + "\n Temperatura: " + Math.floor(temperature * 10) / 10 + '&#x2103;' + 
-		// ", Wilgotność: " + datas[0].humidity * 100 + "%, siła wiatru: " + datas[0].windSpeed + 
-		// "m/s, indeks promieniowania UV: " + datas[0].uvIndex;
-
-
-		// $('#details')
-		// 	.html(text);
-		// $('#icon')
-		// 	.children()
-		// 	.remove();
-		// $('#icon')
-		// 	.append(img);
 	}
 
 	successSearchRequest = function (result) {
@@ -69,6 +56,10 @@ $(document).ready(function() {
 
 			lat = result.results[0].geometry.location.lat;
 			lng = result.results[0].geometry.location.lng;
+
+			$('input[name="cityName"]').val(cityName);
+			$('input[name="lat"]').val(lat);
+			$('input[name="lng"]').val(lng);
 
 			let darkskyUrl = darksky + darkskyKey + "/" + lat + "," + lng;
 			

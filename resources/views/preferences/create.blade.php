@@ -1,8 +1,9 @@
 
 <h4 id="title">Ustaw powiadomienia dla <span id="myCity">...</span></h4>
-<form id="preferences_form" action="#" method="POST">
+<form id="preferences_form" action="{{ url('preferences') }}" method="POST">
 
 	{{ csrf_field() }}
+	{{ method_field("POST") }}
 
 	<div class="form-group col-md-3">
 		<label for="max_temp">Temperatura powyżej</label>
@@ -33,8 +34,11 @@
 		<input type="email" name="email" value="" class="form-control" required>
 		<div class="help-block"></div>
 	</div>
+	<input type="hidden" name="cityName" value="">
+	<input type="hidden" name="lat" value="">
+	<input type="hidden" name="lng" value="">
 	<div class="col-md-6 pull-right">
 		<label></label>
-		<button id="preferences" type="button" class="btn btn-info btn-block">Zapisz zmiany</button>
+		<button id="preferences" type="submit" class="btn btn-info btn-block">Zapisz zmiany</button>
 	</div>
 </form>

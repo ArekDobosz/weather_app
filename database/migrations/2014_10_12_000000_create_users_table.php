@@ -17,8 +17,8 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('email')->unique();
             $table->integer('place_id');
-            $table->decimal('max_temperature', 3, 2)->nullable();
-            $table->decimal('min_temperature', 3, 2)->nullable();
+            $table->decimal('max_temperature', 5, 2)->nullable();
+            $table->decimal('min_temperature', 5, 2)->nullable();
             $table->integer('max_humidity')->nullable();
             $table->integer('min_humidity')->nullable();
             $table->decimal('wind', 3, 2)->nullable();
