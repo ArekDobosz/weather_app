@@ -4,7 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Helpers\WeatherHelper;
-use App\Place;
+use App\Jobs\CheckPreferences;
+use Carbon\Carbon;
 
 class cronUpdateWeather extends Command
 {
@@ -40,5 +41,10 @@ class cronUpdateWeather extends Command
     public function handle()
     {
         WeatherHelper::update();
+
+        $job = (new CheckPreferences())
+            ->delay(Carbon::now()->addSeconds(10));
+
+        dispatch($job);
     }
 }

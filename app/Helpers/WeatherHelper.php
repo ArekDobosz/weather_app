@@ -56,7 +56,7 @@ class WeatherHelper
 				'id' => $place['id'],
 				'icon' => $data->currently->icon,
 				'temp' => $data->currently->temperature,
-				'humidity' => $data->currently->humidity,
+				'humidity' => $data->currently->humidity * 100,
 				'windSpeed' => $data->currently->windSpeed,
 				'uvIndex' => $data->currently->uvIndex,
 				// 'rainfall' => $data->currently->precipType
@@ -68,8 +68,9 @@ class WeatherHelper
 	public static function createNotifications() {
 
 		$users = User::with('place')->get();
-		$max_temperature = $min_temperature = $max_humidity = $min_humidity = $wind = $radiation = $index = '';
+		$max_temperature = $min_temperature = $max_humidity = $min_humidity = $wind = $radiation = $index = $msg = '';
 		$temp = [];
+
 		foreach($users as $user) {
 			
 			$notify = false;
@@ -78,7 +79,7 @@ class WeatherHelper
 				$notify = true;
 			}
 			if(isset($user->min_temperature) && $user->min_temperature > $user->place->temperature) {
-				$min_temperature = "temperatura minimalna spdadła poniżej progu i wynosi {$user->place->temperature0}, ";
+				$min_temperature = "temperatura minimalna spdadła poniżej progu i wynosi {$user->place->temperature}, ";
 				$notify = true;
 			}
 			if(isset($user->max_humidity) && $user->max_humidity < $user->place->humidity) {
@@ -86,7 +87,7 @@ class WeatherHelper
 				$notify = true;
 			}
 			if(isset($user->min_humidity) && $user->min_humidity > $user->place->humidity) {
-				$min_humidity = "wilgotność powietrza spadła poniżej {$user->min_humidity}% i wynosi {$user->place->humidity}, ";
+				$min_humidity = "wilgotność powietrza spadła poniżej {$user->min_humidity}% i wynosi {$user->place->humidity}%, ";
 				$notify = true;
 			}
 			if(isset($user->wind) && $user->wind < $user->place->wind) {
@@ -98,10 +99,10 @@ class WeatherHelper
 				$notify = true;
 			}
 			if($notify) {
-				$msg = "Użytkowniku {$user->email}, {$max_temperature}{$min_temperature}{$max_humidity}{$min_humidity}{$wind}{$index} pozdrawiamy zespół weather_app";
+				$msg = "Użytkowniku {$user->email} w miejscowości {$user->place->name}, {$max_temperature}{$min_temperature}{$max_humidity}{$min_humidity}{$wind}{$index}pozdrawiamy zespół weather_app";
 			}
-			$temp[] = $msg;
-		}
+			$temp[$user->email] = $msg;
+		}	
 		return $temp;
 	}
 

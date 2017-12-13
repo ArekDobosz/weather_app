@@ -75,7 +75,7 @@ $(document).ready(function() {
 	}
 
 	failSearchRequest = function() {
-		console.log('coś poszło nie tak');
+		searchResult.text('Błąd serwera. Proszę odśwież stronę.')		
 	}
 
 	function getWeather (search) {
@@ -105,9 +105,7 @@ $(document).ready(function() {
        		method: method,
        		dataType: "json"
        	}).done(function (result) {
-       		if(!result.results[0].address_components) {
-       			cityOutput.text('Błąd serwera. Odśwież stronę.');
-       		} else {
+       		try {
 	       		var data = result.results[0].address_components;
 
 	       		for (i = 0; i < data.length; i++) {
@@ -121,10 +119,10 @@ $(document).ready(function() {
 	       			}
 	       		}
 	       		searchingCity.val(city);
+       		} catch(e){}
 		  //      	if(searchingCity.val() == "") {
 				// 	getWeather(city);
 				// }      			
-       		}
        	}).fail(function (result) {
        		cityOutput.text('Błąd serwera. Odśwież aby naprawić.');
        	});
@@ -153,8 +151,8 @@ $(document).ready(function() {
 	// DODAWANIE PREFERENCJI
 	$('#preferences').click(function(e) {
 		e.preventDefault();
-
-		$(this).addClass('disabled').text('Czekaj...');
+		let btn = $(this);
+		btn.addClass('disabled').text('Czekaj...');
 
 
 		let emailInput = $('input[name="email"]');
@@ -193,7 +191,8 @@ $(document).ready(function() {
 			$('.panel').
 				append($('<h4 class="text-center">' + result + msg + '</h4>'));
 		}).fail(function(result) {
-			$(this).removeClass('disabled').text('Zapisz zmiany');
+			btn.removeClass('disabled')
+			btn.text('Dodaj preferencje');
 			let json = JSON.parse(result.responseText);
 			if (json.errors['email']) {
 				emailInput

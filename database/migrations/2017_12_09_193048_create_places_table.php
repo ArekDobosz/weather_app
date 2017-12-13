@@ -16,13 +16,13 @@ class CreatePlacesTable extends Migration
         Schema::create('places', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('lat');
-            $table->string('lng');
-            $table->decimal('temperature', 5, 2);
-            $table->integer('humidity');
-            $table->decimal('wind', 5, 2);
-            $table->integer('radiation');
-            $table->string('icon');
+            $table->string('lat')->default('0');
+            $table->string('lng')->default('0');
+            $table->decimal('temperature', 5, 2)->default(0);
+            $table->integer('humidity')->default(0);
+            $table->decimal('wind', 5, 2)->default(0);
+            $table->integer('radiation')->default(0);
+            $table->string('icon')->default('');
             $table->timestamps();
         });
     }

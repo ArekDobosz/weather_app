@@ -30,20 +30,10 @@ class PreferencesController extends Controller
             $place_id = $Place->id;
         }
 
-		$User = User::create([
-			'email' => $request->email, 
-			'place_id' => $place_id, 
-			'max_temperature' => $request->max_temp, 
-			'min_temperature' => $request->min_temp, 
-			'max_humidity' => $request->max_humidity, 
-			'min_humidity' => $request->min_humidity, 
-			'wind' => $request->wind, 
-			'radiation' =>$request->radiation, 
-			'token' => uniqid(sha1(rand(1,100)))
-		]);
+		$token = $this->createUser($request, $place_id);
 
     	Notification::route('mail', $request->email)
-    		->notify(new SendMessage($User->token));
+    		->notify(new SendMessage($token));
 
     	return response()->json('Preferencje zostały dodane', 201);
     }
@@ -52,7 +42,7 @@ class PreferencesController extends Controller
     {
     	$user = User::where('token', $token)->with('place')->first();
     	if(!$user) {
-    		abort(404);
+    		abort(403);
     	}
     	return view('user.edit', compact('user'));
     }
@@ -71,9 +61,9 @@ class PreferencesController extends Controller
             } else {
                 $place_id = $Place->id;
             }
+    	    $user->place_id = $place_id;
         }
 
-    	$user->place_id = $place_id;
 		$user->max_temperature = $request->max_temperature;
 		$user->min_temperature = $request->min_temperature;
 		$user->max_humidity = $request->max_humidity;
@@ -83,6 +73,22 @@ class PreferencesController extends Controller
 		$user->save();
 
         return back();
+    }
+
+    private function createUser($request, $place_id) {
+
+        $User = User::create([
+            'email' => $request->email, 
+            'place_id' => $place_id, 
+            'max_temperature' => $request->max_temp, 
+            'min_temperature' => $request->min_temp, 
+            'max_humidity' => $request->max_humidity, 
+            'min_humidity' => $request->min_humidity, 
+            'wind' => $request->wind, 
+            'radiation' =>$request->radiation, 
+            'token' => uniqid(sha1(rand(1,100)))
+        ]);
+        return $User->token;
     }
 
     private function addNewPlace($name, $lat, $lng)

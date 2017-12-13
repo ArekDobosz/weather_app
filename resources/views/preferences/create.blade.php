@@ -39,6 +39,6 @@
 	<input type="hidden" name="lng" value="">
 	<div class="col-md-6 pull-right">
 		<label></label>
-		<button id="preferences" type="submit" class="btn btn-info btn-block">Zapisz zmiany</button>
+		<button id="preferences" type="submit" class="btn btn-info btn-block">Dodaj preferencje</button>
 	</div>
 </form>

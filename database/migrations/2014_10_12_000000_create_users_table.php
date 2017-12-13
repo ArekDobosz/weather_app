@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->decimal('min_temperature', 5, 2)->nullable();
             $table->integer('max_humidity')->nullable();
             $table->integer('min_humidity')->nullable();
-            $table->decimal('wind', 3, 2)->nullable();
+            $table->decimal('wind', 5, 2)->nullable();
             $table->integer('radiation')->nullable();
             $table->string('token')->nullable();
             $table->timestamps();

@@ -26,8 +26,8 @@
 		<input type="number" name="min_humidity" min="0" max="100" step="5" value="{{ $user->min_humidity }}" class="form-control">
 	</div>
 	<div class="form-group col-md-4">
-		<label for="wind_v">Siła wiatru</label>
-		<input type="number" name="wind_v" min="0" max="200" step="10" value="{{ $user->wind }}" class="form-control">
+		<label for="wind">Siła wiatru</label>
+		<input type="number" name="wind" min="0" max="200" step="10" value="{{ $user->wind }}" class="form-control">
 	</div>
 	<input type="hidden" name="cityName" value="">
 	<input type="hidden" name="lat" value="">
