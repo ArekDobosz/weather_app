@@ -45,10 +45,5 @@ class UserModelTest extends TestCase
         $this->assertEquals($user->min_humidity, $foundedUser->min_humidity);
         $this->assertEquals($user->wind, $foundedUser->wind);
         $this->assertEquals($user->radiation, $foundedUser->radiation);
-
-        // $user2 = User::create([
-        //     'email' => 'example@example.com'
-        // ]);
-        // $this->seeStatusCode(422);
     }
 }

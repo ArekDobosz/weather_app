@@ -12,7 +12,7 @@
 	</div>
 	<div class="col-md-6 text-right">
 		<div id="icon">
-			<img src="{{ asset('img/'.$user->place->icon.'.png') }}" width="150">
+			<img id="weather_icon" src="{{ asset('img/'.$user->place->icon.'.png') }}" width="150">
 		</div>
 	</div>
 	<div class="col-md-6 text-left">

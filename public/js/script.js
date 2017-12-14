@@ -13,8 +13,15 @@ $(document).ready(function() {
 	let lng;
 
 	showWatherDetails = function (result) {
-		if(typeof(prefix) != 'undefined') { console.log('ok') }
-		let asset = 'img/' + result.icon + '.png';
+
+		let asset;
+		let icon = $('#icon img').attr('src');
+		
+		if (typeof(icon) != 'undefined') {
+			asset = icon.split('/img/')[0] + '/img/' + result.icon + '.png';
+		} else {
+			asset = 'img/' + result.icon + '.png';			
+		}
 
 		let img = $('<img src=' + asset + ' width="150">');
 
@@ -134,16 +141,16 @@ $(document).ready(function() {
 	function showError(error) {
 	    switch(error.code) {
 	        case error.PERMISSION_DENIED:
-	            x.innerHTML = "Brak pozwolenie na geolokalizację."
+	            cityOutput.innerHTML = "Brak pozwolenie na geolokalizację."
 	            break;
 	        case error.POSITION_UNAVAILABLE:
-	            x.innerHTML = "Nie można ustalić pozycji."
+	            cityOutput.innerHTML = "Nie można ustalić pozycji."
 	            break;
 	        case error.TIMEOUT:
-	            x.innerHTML = "Minął czas oczekiwania na przetworzenie żądania."
+	            cityOutput.innerHTML = "Minął czas oczekiwania na przetworzenie żądania."
 	            break;
 	        case error.UNKNOWN_ERROR:
-	            x.innerHTML = "Nieoczekiwany błąd."
+	            cityOutput.innerHTML = "Nieoczekiwany błąd."
 	            break;
 	    }
 	}
