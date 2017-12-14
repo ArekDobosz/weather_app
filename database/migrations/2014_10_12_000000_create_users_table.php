@@ -17,11 +17,11 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('email')->unique();
             $table->integer('place_id');
-            $table->decimal('max_temperature', 5, 2)->nullable();
-            $table->decimal('min_temperature', 5, 2)->nullable();
+            $table->integer('max_temp')->nullable();
+            $table->integer('min_temp')->nullable();
             $table->integer('max_humidity')->nullable();
             $table->integer('min_humidity')->nullable();
-            $table->decimal('wind', 5, 2)->nullable();
+            $table->integer('wind')->nullable();
             $table->integer('radiation')->nullable();
             $table->string('token')->nullable();
             $table->timestamps();

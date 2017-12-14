@@ -10,8 +10,6 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Styles -->
-    <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
     
@@ -20,30 +18,30 @@
     <div class="container">
 
         <div class="panel panel-success">
-            <div class="panel-heading text-center">
-                        
-                <h5 class="pull-left">
-                    Twoja aktualna pozycja: 
-                    <span id="countryOutput"></span>,
+            <div class="panel-body">                        
+                <div class="col-md-6 pull-left">
+                    <button class="btn btn-default" id="set_position">
+                        <img src="{{ asset('img/location.png') }}" height="25px" title="Ustal pozycję">
+                    </button>
+                    <!-- Twoja aktualna pozycja:  -->
+                    <span id="countryOutput"></span>
                     <span id="cityOutput"></span>               
-                </h5>
-                <div class="pull-right">
-                    @include('search')
+                </div>
+                <div class="col-md-6 pull-right text-right">
+                    @include('utils.search')
                 </div>
             </div>
-            <div class="panel-body text-center">
-                @yield('details')
-            </div>
         </div>
-
+        <div class="panel panel-info" id="info_panel">            
+            @yield('details')            
+        </div>
         @yield('form')
-
-
     </div>
 
-        <script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
-        <script src="{{ asset('js/app.js') }}"></script>    
+    <script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
+
         @yield('script')
-    <!-- Scripts -->
+
 </body>
 </html>

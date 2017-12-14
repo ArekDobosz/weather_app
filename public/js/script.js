@@ -1,4 +1,6 @@
-
+function setPrefix (pre) {
+	const prefix = pre;
+}
 $(document).ready(function() {
 
 	let cityOutput = $('#cityOutput');
@@ -11,31 +13,22 @@ $(document).ready(function() {
 	let lng;
 
 	showWatherDetails = function (result) {
+		if(typeof(prefix) != 'undefined') { console.log('ok') }
+		let asset = 'img/' + result.icon + '.png';
 
-		let rainfall = result.daily.data[0].precipType;
-		let hourlyData = result.hourly;
-		let summary = hourlyData.summary;
-		let datas = hourlyData.data;
-		let temperature = (datas[0].temperature - 32)/1.8;
-			temperature = Math.floor(temperature * 10) / 10 + '&#x2103;';
-		// let icon = "{{ asset('img/'" + datas[0].icon + ".svg') }}";
-		let date = new Date(null);
-		
-		date.setSeconds(datas[0].time);
-		// console.log(date.toISOString());
+		let img = $('<img src=' + asset + ' width="150">');
 
-		let img = $('<img src="img/' + datas[0].icon + '.png" width="100">');
 		$('#icon')
 			.children()
 			.remove();
 		$('#icon').html(img);
-		$('#temp').html("Temperatura powietrza " + temperature);
-		$('#humi').html("Wilgotność " + datas[0].humidity * 100 + "%");
-		$('#wind').html("Siła wiatru " + datas[0].windSpeed + "m/s");
-		$('#uvIn').html("Indeks promieniowania " + datas[0].uvIndex);
+		$('#temp').html("Temperatura powietrza " + result.temperature + "&#x2103;");
+		$('#humi').html("Wilgotność " + result.humidity + "%");
+		$('#wind').html("Siła wiatru " + result.wind + "m/s");
+		$('#uvIn').html("Indeks promieniowania " + result.uvIndex);
 
 		myCity.val(cityName);
-		$('#form').show();
+		$('#preferences_div').removeClass('hidden');
 	}
 
 	successSearchRequest = function (result) {
@@ -51,20 +44,17 @@ $(document).ready(function() {
 			searchResult.text(cityName);
 			myCity.text(cityName);
 
- 			let darksky = "https://api.darksky.net/forecast/";
- 			let darkskyKey = "8676a9ca8d3ed7e785fb490ee18b6635";
-
 			lat = result.results[0].geometry.location.lat;
 			lng = result.results[0].geometry.location.lng;
+
+			let url = '/weather_app/public/weather/' + lat + '/' + lng + '/' + cityName;
 
 			$('input[name="cityName"]').val(cityName);
 			$('input[name="lat"]').val(lat);
 			$('input[name="lng"]').val(lng);
-
-			let darkskyUrl = darksky + darkskyKey + "/" + lat + "," + lng;
 			
 			$.ajax({
-				url: darkskyUrl,
+				url: url,
 				type: "GET",
 				dataType: "json",
 				beforeSend: function(xhr) {
@@ -75,7 +65,12 @@ $(document).ready(function() {
 	}
 
 	failSearchRequest = function() {
+		if (searchingCity.val() == "") {
+			searchResult.text("Należy wpisać szukaną wartość w polu wyszukiwania")
+		} else {
+
 		searchResult.text('Błąd serwera. Proszę odśwież stronę.')		
+		}
 	}
 
 	function getWeather (search) {
@@ -119,10 +114,10 @@ $(document).ready(function() {
 	       			}
 	       		}
 	       		searchingCity.val(city);
-       		} catch(e){}
-		  //      	if(searchingCity.val() == "") {
-				// 	getWeather(city);
-				// }      			
+       		} catch(e){
+       			cityOutput.text("Spróbuj ponownie");
+       			countryOutput.text('');
+       		}    			
        	}).fail(function (result) {
        		cityOutput.text('Błąd serwera. Odśwież aby naprawić.');
        	});
@@ -134,7 +129,33 @@ $(document).ready(function() {
 		displayLocation(x,y);
 	};
 
-	navigator.geolocation.getCurrentPosition(successCallback);
+
+	// INICJALIZACJA GEOLOKACJI
+	function showError(error) {
+	    switch(error.code) {
+	        case error.PERMISSION_DENIED:
+	            x.innerHTML = "Brak pozwolenie na geolokalizację."
+	            break;
+	        case error.POSITION_UNAVAILABLE:
+	            x.innerHTML = "Nie można ustalić pozycji."
+	            break;
+	        case error.TIMEOUT:
+	            x.innerHTML = "Minął czas oczekiwania na przetworzenie żądania."
+	            break;
+	        case error.UNKNOWN_ERROR:
+	            x.innerHTML = "Nieoczekiwany błąd."
+	            break;
+	    }
+	}
+
+	$('#set_position').click(function (e) {
+		if(!navigator.geolocation) {
+			cityOutput("Twoja przeglądarka nie wspiera geolokalizacji.")
+		} else {
+			navigator.geolocation.getCurrentPosition(successCallback, showError);		
+		}
+		return false;		
+	})
 
 	// WYSZUKIWANIE MIASTA
 	$('#submit_btn').click(function(e) {
@@ -154,14 +175,12 @@ $(document).ready(function() {
 		let btn = $(this);
 		btn.addClass('disabled').text('Czekaj...');
 
-
-		let emailInput = $('input[name="email"]');
-		emailInput
-			.parent()
-			.removeClass('has-error')
-			.children()
-			.last()
-			.html("");
+		let errors = document.querySelectorAll('.has-error');
+		
+		for (i = 0; i < errors.length; i++) {
+			error = errors[i].children[2].innerHTML = '';
+			errors[i].classList.remove('has-error');
+		}
 
 		let url = "/weather_app/public/preferences";
 
@@ -173,37 +192,44 @@ $(document).ready(function() {
 			type: "POST",
 			dataType: "json",
 			data: {
-				cityName: cityName,
-				lat: lat,
-				lng: lng,
+				cityName: typeof(cityName) != 'undefined' ? cityName : $('input[name="cityName"]').val(),
+				lat: typeof(lat) != 'undefined' ? lat : $('input[name="lat"]').val(),
+				lng: typeof(lng) != 'undefined' ? lng : $('input[name="lng"]').val(),
 				max_temp: $('input[name="max_temp"]').val(),
 				min_temp: $('input[name="min_temp"]').val(), 
 				radiation: $('input[name="radiation"]').val(),
 				max_humidity: $('input[name="max_humidity"]').val(),
 				min_humidity: $('input[name="min_humidity"]').val(),
-				wind: $('input[name="wind_v"]').val(),
+				wind: $('input[name="wind"]').val(),
 				email: $('input[name="email"]').val(),
 			},
 		}).done(function(result) {
-			$('#preferences_form').hide();
-			$('#title').hide();
+
+			$('#preferences_div').hide();
+
 			let msg = '. Aby je edytować skorzystaj z odnośnika wysłanego na adres e-mail.';
-			$('.panel').
+
+			$('#info_panel').
 				append($('<h4 class="text-center">' + result + msg + '</h4>'));
 		}).fail(function(result) {
 			btn.removeClass('disabled')
 			btn.text('Dodaj preferencje');
 			let json = JSON.parse(result.responseText);
-			if (json.errors['email']) {
-				emailInput
-					.parent()
-					.addClass('has-error')
-					.children()
-					.last()
-					.html(json.errors['email']);
-			}
+			$.each(json.errors, function (key, val) {
+				displayErrors(key, val);
+			})
 		});
 
 		return false;
 	});
+
+	function displayErrors(inputName, error) {
+		input = $('input[name="'+ inputName +'"]');
+		input
+			.parent()
+			.addClass('has-error')
+			.children()
+			.last()
+			.html(error);
+	}
 });

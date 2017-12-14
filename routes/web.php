@@ -11,9 +11,6 @@
 |
 */
 
-use App\Jobs\CheckPreferences;
-use Carbon\Carbon;
-
 Route::get('/', function () {
     return view('user.create');
 });
@@ -22,5 +19,5 @@ Route::post('preferences', 'PreferencesController@store')->name('preferences.sto
 Route::get('preferences/{token}', 'PreferencesController@edit')->name('preferences.edit');
 Route::patch('preferences/{token}', 'PreferencesController@update');
 
-Route::get('weather/', 'WeatherController@update');
+Route::get('weather/{lat}/{lng}/{city}', 'WeatherController@update');
 

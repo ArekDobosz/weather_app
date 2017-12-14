@@ -45,9 +45,7 @@ class PreferencesControllerTest extends TestCase
 	} 
 
     /**
-     * A basic test example.
-     *
-     * @return void
+     * @test
      */
     public function testCreatedUserAndPlace()
     {

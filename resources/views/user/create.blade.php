@@ -1,40 +1,33 @@
 @extends('layouts.layout');
 
 @section('details')		
-
-	<!-- <div class="col-md-6">
-		<h2 id="searchResult"></h2>				
-	</div>
-	<div class="col-md-6">
+<div class="panel-heading">
+	
+	<!-- <div class="col-md-12"> -->
+		<h3 id="cityName" class="text-center">
+			Aby sprawdzić pogodę wyszukaj miasto
+		</h3>				
+	<!-- </div> -->
+</div>
+	<div class="panel-body text-center">
+	<div class="col-md-6 text-right">
 		<div id="icon"></div>
-		<h4 id="details"></h4>
-	</div> -->
-
-	<div class="col-md-6">
-		<h2 id="cityName">Aby sprawdzić pogodę wyszukaj miasto</h2>				
 	</div>
+	<div class="col-md-6 text-left">
+		<ul class="weather_details">
+			<li id="temp"></li>
+			<li id="humi"></li>
+			<li id="wind"></li>
+			<li id="uvIn"></li>
+		</ul>
 
-	<div class="col-md-6">
-		<div id="icon"><img src="{{ asset('img/partly-cloudy-day.png') }}" width="100"></div>
-		<div>
-			
-			<ul class="weather_details">
-				<li id="temp"></li>
-				<li id="humi"></li>
-				<li id="wind"></li>
-				<li id="uvIn"></li>
-			</ul>
-
-		</div>
 	</div>
+</div>
 
 @endsection
 
 @section('form')
-	<div id="form">
 		@include('preferences.create')		
-	</div>
-
 @endsection
 
 @section('script')
