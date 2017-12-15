@@ -1,7 +1,6 @@
 $(document).ready(function() {
-
-	// const BASE_URL = '';
-	const BASE_URL = '/weather_app/public'; // FOR LOCALHOST
+	// const BASE_URL = '/weather_app/public'  /* LOCALHOST */
+	const BASE_URL = ''; 
 	let cityOutput = $('#cityOutput');
 	let countryOutput = $('#countryOutput');
 	let searchingCity = $('input[name="city"]');
@@ -17,14 +16,12 @@ $(document).ready(function() {
 		let icon = $('#icon img').attr('src');
 		
 		if (typeof(icon) != 'undefined') {
-			if(icon.indexOf('img') == -1) {
-				asset = icon.split('/img/')[0] + '/img/' + result.icon + '.png';				
-			} else {
-				asset = icon;
-			}
+			asset = icon.split('/img/')[0] + '/img/' + result.icon + '.png';
+			// console.log(asset);
 		} else {
 			asset = 'img/' + result.icon + '.png';			
 		}
+		// asset = asset.split('/img/');
 
 		let img = $('<img src=' + asset + ' width="150">');
 
