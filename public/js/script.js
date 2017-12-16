@@ -1,7 +1,5 @@
 $(document).ready(function() {
 
-	// const BASE_URL = '';
-	const BASE_URL = '/weather_app/public'; // FOR LOCALHOST
 	let cityOutput = $('#cityOutput');
 	let countryOutput = $('#countryOutput');
 	let searchingCity = $('input[name="city"]');
@@ -12,26 +10,12 @@ $(document).ready(function() {
 	let lng;
 
 	showWatherDetails = function (result) {
-
-		let asset;
-		let icon = $('#icon img').attr('src');
-		
-		if (typeof(icon) != 'undefined') {
-			if(icon.indexOf('img') == -1) {
-				asset = icon.split('/img/')[0] + '/img/' + result.icon + '.png';				
-			} else {
-				asset = icon;
-			}
-		} else {
-			asset = 'img/' + result.icon + '.png';			
-		}
-
-		let img = $('<img src=' + asset + ' width="150">');
+		imgSrc = IMG_URL + "/" + result.icon + '.png';
 
 		$('#icon')
 			.children()
 			.remove();
-		$('#icon').html(img);
+		$('#icon').html('<img src="'+ imgSrc +'" width="150">');
 		$('#temp').html("Temperatura powietrza " + result.temperature + "&#x2103;");
 		$('#humi').html("Wilgotność " + result.humidity + "%");
 		$('#wind').html("Siła wiatru " + result.wind + "m/s");

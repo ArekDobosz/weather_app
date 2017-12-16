@@ -40,6 +40,10 @@
 
     <script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
+    <script type="text/javascript">
+        const IMG_URL = '{{ URL::asset('img/') }}';
+        const BASE_URL = '{{ url('/') }}';
+    </script>
 
         @yield('script')
 
