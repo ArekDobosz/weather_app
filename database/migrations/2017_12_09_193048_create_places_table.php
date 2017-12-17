@@ -23,7 +23,7 @@ class CreatePlacesTable extends Migration
             $table->decimal('wind', 5, 2)->default(0);
             $table->integer('radiation')->default(0);
             $table->string('icon')->default('');
-            $table->timestamp('time');
+            $table->timestamp('time')->useCurrent();
             $table->timestamps();
         });
     }
