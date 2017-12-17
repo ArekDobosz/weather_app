@@ -18,6 +18,7 @@
 	<div class="col-md-6 text-left">
 			
 			<ul class="weather_details">
+				<li id="time">Dane na dzień {{ $user->place->time }}</li>
 				<li id="temp">Temperatura powietrza {{ $user->place->temperature }}&#x2103;</li>
 				<li id="humi">Wilgotność {{ $user->place->humidity }}%</li>
 				<li id="wind">Siła wiatru {{ $user->place->wind }} m/s</li>

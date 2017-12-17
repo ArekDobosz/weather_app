@@ -8,12 +8,9 @@ use App\User;
 
 class WeatherHelper 
 {
-	// https://api.darksky.net/forecast/8676a9ca8d3ed7e785fb490ee18b6635/54.03640499999999,21.7667342
-	// https://api.darksky.net/forecast/8676a9ca8d3ed7e785fb490ee18b6635/lat=54.03640499999999,lng=21.7667342"
 	public static function getWeatherData($lat, $lng)
 	{
 		$url = "https://api.darksky.net/forecast/8676a9ca8d3ed7e785fb490ee18b6635/".$lat.",".$lng;
-		// die(var_dump($url));
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -47,6 +44,7 @@ class WeatherHelper
     				'wind' => $place['windSpeed'],
     				'radiation' => $place['uvIndex'],
     				'icon' => $place['icon'],
+    				'time' => $place['time'],
     			]);
     	}
 	}
@@ -62,7 +60,7 @@ class WeatherHelper
 				'humidity' => $data->currently->humidity * 100,
 				'windSpeed' => $data->currently->windSpeed,
 				'uvIndex' => $data->currently->uvIndex,
-				// 'rainfall' => $data->currently->precipType
+				'time' => gmdate("Y-m-d H:i:s", $data->currently->time),
 			];
 		}
 		return $places;

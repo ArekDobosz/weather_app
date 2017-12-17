@@ -51,7 +51,7 @@ class PreferencesController extends Controller
     {
     	$user = User::where('token', $token)->with('place')->first();
     	if(!$user) {
-    		abort(403);
+    		abort(403, 'Brak dostępu do opcji.');
     	}
     	return view('user.edit', compact('user'));
     }
@@ -117,8 +117,8 @@ class PreferencesController extends Controller
     private function addNewPlace($name, $lat, $lng)
     {
         $data = WeatherHelper::getWeatherData($lat, $lng);
-
-        $temp = floor((($data->currently->temperature - 32) / 1.8) * 10) / 10;
+                
+        $temp = WeatherHelper::toCelsius($data->currently->temperature);
 
         $Place = Place::create([
             'name' => $name,

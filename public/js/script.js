@@ -9,6 +9,9 @@ $(document).ready(function() {
 	let lat;
 	let lng;
 
+	/*
+	 * Display searching result 
+	 */
 	showWatherDetails = function (result) {
 		imgSrc = IMG_URL + "/" + result.icon + '.png';
 
@@ -16,6 +19,7 @@ $(document).ready(function() {
 			.children()
 			.remove();
 		$('#icon').html('<img src="'+ imgSrc +'" width="150">');
+		$('#time').html("Dane na dzień " + result.time);
 		$('#temp').html("Temperatura powietrza " + result.temperature + "&#x2103;");
 		$('#humi').html("Wilgotność " + result.humidity + "%");
 		$('#wind').html("Siła wiatru " + result.wind + "m/s");
@@ -25,6 +29,9 @@ $(document).ready(function() {
 		$('#preferences_div').removeClass('hidden');
 	}
 
+	/*
+	 * Check the results of the place and call the showWeatherDetais
+	 */
 	successSearchRequest = function (result) {
 
 		if(result.status == "ZERO_RESULTS") {
@@ -51,9 +58,6 @@ $(document).ready(function() {
 				url: url,
 				type: "GET",
 				dataType: "json",
-				beforeSend: function(xhr) {
-
-				},
 			}).done(showWatherDetails);					
 		}
 	}
@@ -67,6 +71,9 @@ $(document).ready(function() {
 		}
 	}
 
+	/*
+	 * Process input data
+	 */
 	function getWeather (search) {
 
 		let api_url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + search + "&key=AIzaSyBhib9s-YIBVgkv0-wTQngahHITCVSRo6U";
@@ -83,6 +90,9 @@ $(document).ready(function() {
 
 	}
 
+	/*
+	 * Display the location
+	 */
     function displayLocation (latitude,longitude) {
 
        	var method = 'GET';
@@ -117,6 +127,9 @@ $(document).ready(function() {
        	});
     }
 
+    /*
+     * If geolocation support 
+     */
 	var successCallback = function (position){
 		var x = position.coords.latitude;
 		var y = position.coords.longitude;
@@ -124,7 +137,7 @@ $(document).ready(function() {
 	};
 
 
-	// INICJALIZACJA GEOLOKACJI
+	// If geolocation not support 
 	function showError(error) {
 	    switch(error.code) {
 	        case error.PERMISSION_DENIED:
@@ -142,6 +155,9 @@ $(document).ready(function() {
 	    }
 	}
 
+	/*
+	 * After click Autolocation btn check geolocation
+	 */
 	$('#set_position').click(function (e) {
 		if(!navigator.geolocation) {
 			cityOutput("Twoja przeglądarka nie wspiera geolokalizacji.")
@@ -151,7 +167,9 @@ $(document).ready(function() {
 		return false;		
 	})
 
-	// WYSZUKIWANIE MIASTA
+	/*
+	 * Searging for input data
+	 */ 
 	$('#submit_btn').click(function(e) {
 
 		e.preventDefault();
@@ -163,13 +181,16 @@ $(document).ready(function() {
 		return false;			
 	});
 
-	// DODAWANIE PREFERENCJI
+	/*
+	 * Adding user preferences
+	 */	
 	$('#preferences').click(function(e) {
 		e.preventDefault();
+
 		let btn = $(this);
 		btn.addClass('disabled').text('Czekaj...');
 
-		let errors = document.querySelectorAll('.has-error');
+		let errors = $('.has-error'); 
 		
 		for (i = 0; i < errors.length; i++) {
 			error = errors[i].children[2].innerHTML = '';
@@ -217,6 +238,9 @@ $(document).ready(function() {
 		return false;
 	});
 
+	/*
+	 * Show input errors for user
+	 */
 	function displayErrors(inputName, error) {
 		input = $('input[name="'+ inputName +'"]');
 		input

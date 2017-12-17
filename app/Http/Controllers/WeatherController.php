@@ -25,6 +25,7 @@ class WeatherController extends Controller
     		'temperature' => WeatherHelper::toCelsius($weather->currently->temperature),
     		'humidity' => $weather->currently->humidity * 100,
     		'wind' => $weather->currently->windSpeed,
+            'time' => gmdate("Y-m-d H:i:s", $weather->currently->time),
     		'uvIndex' => $weather->currently->uvIndex
     	];
 

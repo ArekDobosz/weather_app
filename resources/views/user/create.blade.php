@@ -15,6 +15,7 @@
 	</div>
 	<div class="col-md-6 text-left">
 		<ul class="weather_details">
+			<li id="time"></li>
 			<li id="temp"></li>
 			<li id="humi"></li>
 			<li id="wind"></li>
