@@ -9,35 +9,15 @@ use App\User;
 use App\Place;
 use App\Helpers\WeatherHelper;
 use App\Notifications\SendMessage;
+use App\Http\Requests\StoreUser;
+use App\Http\Requests\EditUser;
 
 class PreferencesController extends Controller
 {
 
-    public function store(Request $request) {
+    public function store(StoreUser $request) {
 
-    	$errors = $request->validate([
-    		'email' => 'required|unique:users|email',
-            'max_temp' => 'min:-99|max:99|integer|nullable',
-            'min_temp' => 'min:-99|max:99|integer|nullable',
-            'radiation' => 'min:0|max:11|integer|nullable',
-            'max_humidity' => 'min:0|max:100|integer|nullable',
-            'min_humidity' => 'min:0|max:100|integer|nullable',
-            'wind' => 'min:0|max:200|integer|nullable',
-    	], [
-    		'unique' => 'Adres e-mail jest zajęty.',
-    		'required' => 'Adres e-mail jest polem wymaganym.',
-    		'email' => 'Wpisany adres e-mail jest nieprawidłowy.',
-            'min' => 'Min wartość to :min',
-            'max' => 'Max wartość to :max',
-    	]);
-
-    	$Place = Place::where('name', $request->cityName)->first();
-
-        if(!$Place) {
-            $place_id = $this->addNewPlace($request->cityName, $request->lat, $request->lng);
-        } else {
-            $place_id = $Place->id;
-        }
+        $place_id = $this->checkPlace($request->cityName, $request->lat, $request->lng);
 
 		$token = $this->createUser($request, $place_id);
 
@@ -56,32 +36,15 @@ class PreferencesController extends Controller
     	return view('user.edit', compact('user'));
     }
 
-    public function update(Request $request, $token)
+    public function update(EditUser $request, $token)
     {
         $user = User::where('token', $token)->first();
         if(!$user) {
-            abort(400);
+            abort(403);
         }
-        $errors = $request->validate([
-            'max_temp' => 'min:-99|max:99|integer|nullable',
-            'min_temp' => 'min:-99|max:99|integer|nullable',
-            'radiation' => 'min:0|max:11|integer|nullable',
-            'max_humidity' => 'min:0|max:100|integer|nullable',
-            'min_humidity' => 'min:0|max:100|integer|nullable',
-            'wind' => 'min:0|max:200|integer|nullable',
-        ], [
-            'min' => 'Min wartość to :min',
-            'max' => 'Max wartość to :max',
-        ]);
 
         if($request->cityName != null) {
-            $Place = Place::where('name', $request->cityName)->first();
-            if(!$Place) {
-                $place_id = $this->addNewPlace($request->cityName, $request->lat, $request->lng);
-            } else {
-                $place_id = $Place->id;
-            }
-    	    $user->place_id = $place_id;
+    	    $user->place_id = $place_id = $this->checkPlace($request->cityName, $request->lat, $request->lng);
         }
 
 		$user->max_temp = $request->max_temp;
@@ -132,5 +95,18 @@ class PreferencesController extends Controller
         ]);
 
         return $Place->id;
+    }
+
+    private function checkPlace($name, $lat, $lng)
+    {
+        $Place = Place::where('name', $name)->first();
+
+        if(!$Place) {
+            $place_id = $this->addNewPlace($name, $lat, $lng);
+        } else {
+            $place_id = $Place->id;
+        }
+
+        return $place_id;
     }
 }
