@@ -14,7 +14,7 @@ $(document).ready(function() {
 	 */
 	showWatherDetails = function (result) {
 		imgSrc = IMG_URL + "/" + result.icon + '.png';
-
+		$('#details-info').html('');
 		$('#icon')
 			.children()
 			.remove();
@@ -83,6 +83,8 @@ $(document).ready(function() {
 				dataType: "json",
 				beforeSend: function(xhr) {
 					searchResult.text('Wyszukuję...');
+					$('#details-info')
+						.html('<img src="'+ IMG_URL +'/loading.gif" width="150px">');
 				},
 			})
 			.done(successSearchRequest)

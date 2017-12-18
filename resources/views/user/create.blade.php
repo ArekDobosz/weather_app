@@ -3,13 +3,13 @@
 @section('details')		
 <div class="panel-heading">
 	
-	<!-- <div class="col-md-12"> -->
 		<h3 id="cityName" class="text-center">
 			Aby sprawdzić pogodę wyszukaj miasto
 		</h3>				
-	<!-- </div> -->
+
 </div>
 	<div class="panel-body text-center">
+	<div id="details-info"></div>
 	<div class="col-md-6 text-right">
 		<div id="icon"></div>
 	</div>

@@ -10,6 +10,7 @@
 	<div class="col-md-12 text-center">
 		<h2 id="cityName">{{ $user->place->name }}</h2>				
 	</div>
+	<div id="details-info"></div>
 	<div class="col-md-6 text-right">
 		<div id="icon">
 			<img id="weather_icon" src="{{ asset('img/'.$user->place->icon.'.png') }}" width="150">

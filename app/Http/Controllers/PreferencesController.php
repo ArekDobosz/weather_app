@@ -19,7 +19,7 @@ class PreferencesController extends Controller
 
         $place_id = $this->checkPlace($request->cityName, $request->lat, $request->lng);
 
-		$token = $this->createUser($request, $place_id);
+        $token = $this->createUser($request, $place_id);
 
     	Notification::route('mail', $request->email)
     		->notify(new SendMessage($token));
@@ -46,14 +46,14 @@ class PreferencesController extends Controller
         if($request->cityName != null) {
     	    $user->place_id = $place_id = $this->checkPlace($request->cityName, $request->lat, $request->lng);
         }
-
-		$user->max_temp = $request->max_temp;
-		$user->min_temp = $request->min_temp;
-		$user->max_humidity = $request->max_humidity;
+        
+        $user->max_temp = $request->max_temp;
+        $user->min_temp = $request->min_temp;
+        $user->max_humidity = $request->max_humidity;
         $user->min_humidity = $request->min_humidity;
-		$user->wind = $request->wind;
-		$user->radiation = $request->radiation;
-		$user->save();
+        $user->wind = $request->wind;
+        $user->radiation = $request->radiation;
+        $user->save();
 
         $request->session()->flash('msg.status', 'success');
         $request->session()->flash('msg.content', 'Dane zostały zaktualizowane');
@@ -74,6 +74,7 @@ class PreferencesController extends Controller
             'radiation' =>$request->radiation, 
             'token' => uniqid(sha1(rand(1,100)))
         ]);
+
         return $User->token;
     }
 

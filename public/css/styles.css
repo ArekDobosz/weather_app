@@ -12,3 +12,7 @@
 .hidden {
 	display: none;
 }
+
+#details-info {
+	/*height: 160px;*/
+}
